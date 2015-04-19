@@ -1,19 +1,50 @@
 package app.com.example.malindasuhash.dailyselfie;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 public class ListImages extends ActionBarActivity {
+
+    private ArrayAdapter<Selfie> mSelfies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_images);
+
+        // The list view
+        ListView selfies = (ListView)findViewById(R.id.selfies);
+
+        mSelfies = new SelfieAdapter(this, getAllSelfies());
+
+        selfies.setAdapter(mSelfies);
+
     }
 
+    private Selfie[] getAllSelfies()
+    {
+        ArrayList<Selfie> selfies = new ArrayList<Selfie>();
+        selfies.add(new Selfie());
+        selfies.add(new Selfie());
+        Selfie[] s = new Selfie[selfies.size()];
+
+        selfies.toArray(s);
+
+        return s;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -30,10 +61,46 @@ public class ListImages extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.camera_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+}
+
+class Selfie
+{
+
+}
+
+class SelfieAdapter extends ArrayAdapter<Selfie>
+{
+    private Context mContext;
+    private Selfie[] mSelfies;
+
+    public SelfieAdapter(Context context, Selfie[] selfies)
+    {
+        super(context, R.layout.row_item, selfies);
+        this.mContext = context;
+        this.mSelfies = selfies;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        //
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View selfieRow = inflater.inflate(R.layout.row_item, parent, false);
+
+        ImageView selfieImage = (ImageView) selfieRow.findViewById(R.id.selfie_img);
+        TextView selfieDesc = (TextView) selfieRow.findViewById(R.id.selfie_des);
+
+        //Selfie selfie = mSelfies[position];
+
+        selfieImage.setImageResource(R.drawable.abc_btn_radio_material);
+        selfieDesc.setText("Boom");
+
+        return selfieRow;
     }
 }
