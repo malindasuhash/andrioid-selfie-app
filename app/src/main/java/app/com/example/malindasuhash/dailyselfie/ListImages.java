@@ -87,7 +87,8 @@ public class ListImages extends ActionBarActivity {
 
 class Selfie
 {
-
+    public String FileFullPath;
+    public String FriendlyName;
 }
 
 class SelfieAdapter extends ArrayAdapter<Selfie>
