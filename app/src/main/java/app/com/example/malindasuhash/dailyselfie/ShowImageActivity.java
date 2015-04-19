@@ -2,8 +2,9 @@ package app.com.example.malindasuhash.dailyselfie;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 public class ShowImageActivity extends Activity {
     @Override
@@ -15,8 +16,8 @@ public class ShowImageActivity extends Activity {
 
         setContentView(R.layout.show_selected_image);
 
-        TextView selectedImageInfo = (TextView) findViewById(R.id.selected_image_info);
+        ImageView selectedImageInfo = (ImageView) findViewById(R.id.selectedImageView);
 
-        selectedImageInfo.setText("Selected index is " + intent.getIntExtra("SelectedImageIndex", -1));
+        selectedImageInfo.setImageURI(Uri.parse(intent.getStringExtra("ImagePath")));
     }
 }

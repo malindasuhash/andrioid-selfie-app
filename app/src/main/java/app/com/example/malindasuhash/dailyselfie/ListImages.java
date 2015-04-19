@@ -25,6 +25,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
+/*
+    References:
+    http://developer.android.com/guide/topics/media/camera.html#saving-media
+    http://www.vogella.com/tutorials/AndroidListView/article.html
+    http://stackoverflow.com/questions/5374311/convert-arrayliststring-to-string
+    http://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
+
+ */
 public class ListImages extends ActionBarActivity {
 
     private static String LogTag = "Selfie";
@@ -44,8 +52,12 @@ public class ListImages extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(LogTag, "Event at " + position + " Long id " + id);
+
                 Intent showImage = new Intent(getApplicationContext(), ShowImageActivity.class);
-                showImage.putExtra("SelectedImageIndex", position);
+
+                Selfie selectedImage = mSelfies.getItem(position);
+                showImage.putExtra("ImagePath", selectedImage.FileFullPath);
+
                 startActivity(showImage);
             }
         });
@@ -125,9 +137,9 @@ public class ListImages extends ActionBarActivity {
 
         if (requestCode == CAMERA && resultCode == RESULT_OK)
         {
-            Log.i(LogTag, "All ok, rebind the directory.");
+            Log.i(LogTag, "All ok, rebind the directory in onResume.");
         } else {
-            Log.i(LogTag, "Something went wrong");
+            Log.i(LogTag, "Something went wrong or user clicked cancel.");
         }
     }
 
@@ -151,7 +163,7 @@ public class ListImages extends ActionBarActivity {
             if (!file.exists())
             {
                 Log.i(LogTag, "Directory created");
-                file.mkdirs(); // Create directory.
+                file.mkdirs();
             } else
             {
                 Log.i(LogTag, "Directory already exists");
@@ -159,12 +171,19 @@ public class ListImages extends ActionBarActivity {
     }
 }
 
+/**
+ * Simple DTO to store the full path and the name of the file.
+ */
 class Selfie
 {
     public String FileFullPath;
     public String FriendlyName;
 }
 
+
+/**
+ * This is the adapter that builds each row in the list view.
+ */
 class SelfieAdapter extends ArrayAdapter<Selfie>
 {
     private Context mContext;
@@ -187,10 +206,10 @@ class SelfieAdapter extends ArrayAdapter<Selfie>
         ImageView selfieImage = (ImageView) selfieRow.findViewById(R.id.selfie_img);
         TextView selfieDesc = (TextView) selfieRow.findViewById(R.id.selfie_des);
 
-        //Selfie selfie = mSelfies[position];
+        Selfie selfie = mSelfies[position];
 
-        selfieImage.setImageResource(R.drawable.abc_btn_radio_material);
-        selfieDesc.setText("Boom");
+        selfieImage.setImageURI(Uri.parse(selfie.FileFullPath));
+        selfieDesc.setText(selfie.FriendlyName.replace(".jpg", "")); // removes extension JPG.
 
         return selfieRow;
     }
