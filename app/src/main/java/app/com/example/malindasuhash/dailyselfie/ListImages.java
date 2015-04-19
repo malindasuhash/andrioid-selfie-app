@@ -2,7 +2,9 @@ package app.com.example.malindasuhash.dailyselfie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,12 +18,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ListImages extends ActionBarActivity {
 
     private static String LogTag = "Selfie";
+    private static int CAMERA = 101;
+    private static String SelfieDirectory = "/Selfie/";
 
     private ArrayAdapter<Selfie> mSelfies;
     private ListView mSelfieList;
@@ -41,6 +49,8 @@ public class ListImages extends ActionBarActivity {
                 startActivity(showImage);
             }
         });
+
+        createLocalDirectory();
     }
 
     @Override
@@ -53,8 +63,24 @@ public class ListImages extends ActionBarActivity {
     private Selfie[] getAllSelfies()
     {
         ArrayList<Selfie> selfies = new ArrayList<Selfie>();
-        selfies.add(new Selfie());
-        selfies.add(new Selfie());
+
+        File files = new File(getExternalFilesDir(null) + SelfieDirectory);
+
+        FileFilter fileFilter = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".jpg");
+            }
+        };
+
+        for (File file : files.listFiles(fileFilter))
+        {
+            Selfie selfie = new Selfie();
+            selfie.FileFullPath = file.getPath();
+            selfie.FriendlyName = file.getName();
+            selfies.add(selfie);
+        }
+
         Selfie[] s = new Selfie[selfies.size()];
 
         selfies.toArray(s);
@@ -78,10 +104,58 @@ public class ListImages extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.camera_settings) {
+
+            File file = new File(getFileNameToStore());
+            Uri fileLocation = Uri.fromFile(file);
+
+            Intent showCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            showCamera.putExtra(MediaStore.EXTRA_OUTPUT, fileLocation);
+
+            startActivityForResult(showCamera, CAMERA);
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(LogTag, "Received callback " + requestCode);
+
+        if (requestCode == CAMERA && resultCode == RESULT_OK)
+        {
+            Log.i(LogTag, "All ok, rebind the directory.");
+        } else {
+            Log.i(LogTag, "Something went wrong");
+        }
+    }
+
+    private String getFileNameToStore()
+    {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        String filePath = getExternalFilesDir(null) + SelfieDirectory + timeStamp + ".jpg";
+
+        Log.i(LogTag, filePath);
+
+        return filePath;
+    }
+
+    private void createLocalDirectory()
+    {
+        String directory = getExternalFilesDir(null) + SelfieDirectory;
+
+        File file = new File(directory, "temp");
+
+            if (!file.exists())
+            {
+                Log.i(LogTag, "Directory created");
+                file.mkdirs(); // Create directory.
+            } else
+            {
+                Log.i(LogTag, "Directory already exists");
+            }
     }
 }
 
