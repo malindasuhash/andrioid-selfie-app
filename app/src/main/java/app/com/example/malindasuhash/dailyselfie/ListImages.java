@@ -1,13 +1,16 @@
 package app.com.example.malindasuhash.dailyselfie;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 
 public class ListImages extends ActionBarActivity {
 
+    private static String LogTag = "Selfie";
+
     private ArrayAdapter<Selfie> mSelfies;
     private ListView mSelfieList;
 
@@ -27,6 +32,15 @@ public class ListImages extends ActionBarActivity {
         setContentView(R.layout.activity_list_images);
 
         mSelfieList = (ListView)findViewById(R.id.selfies);
+        mSelfieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(LogTag, "Event at " + position + " Long id " + id);
+                Intent showImage = new Intent(getApplicationContext(), ShowImageActivity.class);
+                showImage.putExtra("SelectedImageIndex", position);
+                startActivity(showImage);
+            }
+        });
     }
 
     @Override
