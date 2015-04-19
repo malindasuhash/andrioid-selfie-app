@@ -19,19 +19,21 @@ import java.util.ArrayList;
 public class ListImages extends ActionBarActivity {
 
     private ArrayAdapter<Selfie> mSelfies;
+    private ListView mSelfieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_images);
 
-        // The list view
-        ListView selfies = (ListView)findViewById(R.id.selfies);
+        mSelfieList = (ListView)findViewById(R.id.selfies);
+    }
 
+    @Override
+    protected void onResume() {
         mSelfies = new SelfieAdapter(this, getAllSelfies());
-
-        selfies.setAdapter(mSelfies);
-
+        mSelfieList.setAdapter(mSelfies);
+        super.onResume();
     }
 
     private Selfie[] getAllSelfies()
