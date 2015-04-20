@@ -1,13 +1,12 @@
 package app.com.example.malindasuhash.dailyselfie;
 
-import android.app.NotificationManager;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +40,8 @@ public class ListImages extends ActionBarActivity {
     private static String LogTag = "Selfie";
     private static int CAMERA = 101;
     private static String SelfieDirectory = "/Selfie/";
+    private static int NotificationId = 837847;
+    private static int TwoMinutes = 60 * 1000;
 
     private ArrayAdapter<Selfie> mSelfies;
     private ListView mSelfieList;
@@ -135,6 +136,7 @@ public class ListImages extends ActionBarActivity {
         if (id == R.id.nooooo)
         {
             // Add a notification
+            /*
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
             builder.setSmallIcon(R.drawable.ic_cam_dark)
@@ -143,10 +145,27 @@ public class ListImages extends ActionBarActivity {
 
             Intent intent = new Intent(getApplicationContext(), ListImages.class);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 102, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
             builder.setContentIntent(pendingIntent);
 
-            manager.notify(103, builder.build());
+            manager.notify(NotificationId, builder.build());
+            */
+
+            // Check whether there is already an alarm
+
+            Intent broadcast = new Intent(getApplicationContext(), AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadcast, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            if (alarmManager != null)
+            {
+                alarmManager.cancel(pendingIntent);
+            }
+
+            // Create the new one.
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, TwoMinutes, TwoMinutes, pendingIntent);
+            Log.i(LogTag, "Alarm created");
+
         }
 
         return super.onOptionsItemSelected(item);

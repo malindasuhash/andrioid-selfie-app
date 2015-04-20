@@ -28,7 +28,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-       
+       <receiver android:name=".AlarmReceiver">
+           <intent-filter>
+               <category android:name="android.intent.category.DEFAULT"></category>
+           </intent-filter>
+       </receiver>
     </application>
 
 </manifest>
