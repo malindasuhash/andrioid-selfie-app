@@ -5,4 +5,8 @@
         android:title="@string/camera"
         android:icon="@drawable/ic_cam_dark"
         android:orderInCategory="100" app:showAsAction="always" />
+    <item android:id="@+id/nooooo"
+        android:title="Notification"
+        android:icon="@drawable/ic_cam_dark"
+        android:orderInCategory="100" app:showAsAction="always" />
 </menu>

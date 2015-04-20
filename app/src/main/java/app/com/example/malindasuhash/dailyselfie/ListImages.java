@@ -1,10 +1,13 @@
 package app.com.example.malindasuhash.dailyselfie;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -123,9 +126,27 @@ public class ListImages extends ActionBarActivity {
             Intent showCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             showCamera.putExtra(MediaStore.EXTRA_OUTPUT, fileLocation);
 
-            startActivityForResult(showCamera, CAMERA);
+            // In case if there multiple applications installed.
+            startActivityForResult(Intent.createChooser(showCamera, "Choose an application:"), CAMERA);
 
             return true;
+        }
+
+        if (id == R.id.nooooo)
+        {
+            // Add a notification
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+            builder.setSmallIcon(R.drawable.ic_cam_dark)
+                    .setContentTitle("Daily Selfie")
+                    .setContentText("Time for another selfie");
+
+            Intent intent = new Intent(getApplicationContext(), ListImages.class);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 102, intent, 0);
+            builder.setContentIntent(pendingIntent);
+
+            manager.notify(103, builder.build());
         }
 
         return super.onOptionsItemSelected(item);
