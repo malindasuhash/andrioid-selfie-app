@@ -40,8 +40,7 @@ public class ListImages extends ActionBarActivity {
     private static String LogTag = "Selfie";
     private static int CAMERA = 101;
     private static String SelfieDirectory = "/Selfie/";
-    private static int NotificationId = 837847;
-    private static int TwoMinutes = 60 * 1000;
+    private static int TwoMinutes = 60 * 1000 * 2;
 
     private ArrayAdapter<Selfie> mSelfies;
     private ListView mSelfieList;
@@ -135,24 +134,6 @@ public class ListImages extends ActionBarActivity {
 
         if (id == R.id.nooooo)
         {
-            // Add a notification
-            /*
-            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-            builder.setSmallIcon(R.drawable.ic_cam_dark)
-                    .setContentTitle("Daily Selfie")
-                    .setContentText("Time for another selfie");
-
-            Intent intent = new Intent(getApplicationContext(), ListImages.class);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-            builder.setContentIntent(pendingIntent);
-
-            manager.notify(NotificationId, builder.build());
-            */
-
-            // Check whether there is already an alarm
-
             Intent broadcast = new Intent(getApplicationContext(), AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadcast, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -160,12 +141,12 @@ public class ListImages extends ActionBarActivity {
             if (alarmManager != null)
             {
                 alarmManager.cancel(pendingIntent);
+                Log.i(LogTag, "Alarm deleted");
             }
 
             // Create the new one.
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, TwoMinutes, TwoMinutes, pendingIntent);
-            Log.i(LogTag, "Alarm created");
-
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TwoMinutes, TwoMinutes, pendingIntent);
+            Log.i(LogTag, "New Alarm created");
         }
 
         return super.onOptionsItemSelected(item);
