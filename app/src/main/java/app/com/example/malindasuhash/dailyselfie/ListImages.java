@@ -2,23 +2,18 @@ package app.com.example.malindasuhash.dailyselfie;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -192,46 +187,4 @@ public class ListImages extends ActionBarActivity {
     }
 }
 
-/**
- * Simple DTO to store the full path and the name of the file.
- */
-class Selfie
-{
-    public String FileFullPath;
-    public String FriendlyName;
-}
 
-
-/**
- * This is the adapter that builds each row in the list view.
- */
-class SelfieAdapter extends ArrayAdapter<Selfie>
-{
-    private Context mContext;
-    private Selfie[] mSelfies;
-
-    public SelfieAdapter(Context context, Selfie[] selfies)
-    {
-        super(context, R.layout.row_item, selfies);
-        this.mContext = context;
-        this.mSelfies = selfies;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View selfieRow = inflater.inflate(R.layout.row_item, parent, false);
-
-        ImageView selfieImage = (ImageView) selfieRow.findViewById(R.id.selfie_img);
-        TextView selfieDesc = (TextView) selfieRow.findViewById(R.id.selfie_des);
-
-        Selfie selfie = mSelfies[position];
-
-        selfieImage.setImageURI(Uri.parse(selfie.FileFullPath));
-        selfieDesc.setText(selfie.FriendlyName.replace(".jpg", "")); // removes extension JPG.
-
-        return selfieRow;
-    }
-}
