@@ -4,9 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.io.File;
+
 public class ShowImageActivity extends Activity {
+
+    private static String LogTag = "Selfie";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -18,6 +26,26 @@ public class ShowImageActivity extends Activity {
 
         ImageView selectedImageInfo = (ImageView) findViewById(R.id.selectedImageView);
 
-        selectedImageInfo.setImageURI(Uri.parse(intent.getStringExtra("ImagePath")));
+        final Uri imagePath = Uri.parse(intent.getStringExtra("ImagePath"));
+        selectedImageInfo.setImageURI(imagePath);
+
+        ImageButton removeFileButton = (ImageButton) findViewById(R.id.removeImage);
+        removeFileButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Remove the file
+                final File file = new File(imagePath.getPath());
+
+                if (file.exists())
+                {
+                    file.delete();
+                    Log.i(LogTag, "File removed.");
+                    // Looks like calling finish simply close this view.
+                    finish();
+                }
+            }
+        });
     }
 }
+
