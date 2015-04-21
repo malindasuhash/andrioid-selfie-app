@@ -14,12 +14,13 @@ import android.util.Log;
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private static String LogTag = "Selfie";
     private static int NotificationId = 232323;
     private static int NotificationNumber = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("Received", "Alarm callback received.");
+        Log.i(LogTag, "Alarm callback received.");
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);

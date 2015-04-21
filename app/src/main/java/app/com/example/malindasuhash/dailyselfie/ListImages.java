@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-/*
+/**
     References:
     http://developer.android.com/guide/topics/media/camera.html#saving-media
     http://www.vogella.com/tutorials/AndroidListView/article.html
     http://stackoverflow.com/questions/5374311/convert-arrayliststring-to-string
     http://stackoverflow.com/questions/8646984/how-to-list-files-in-an-android-directory
-
+    https://developer.android.com/training/scheduling/alarms.html
  */
 public class ListImages extends ActionBarActivity {
 
@@ -61,6 +61,7 @@ public class ListImages extends ActionBarActivity {
         });
 
         createLocalDirectory();
+        setupAlarm();
     }
 
     @Override
@@ -127,23 +128,6 @@ public class ListImages extends ActionBarActivity {
             return true;
         }
 
-        if (id == R.id.nooooo)
-        {
-            Intent broadcast = new Intent(getApplicationContext(), AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadcast, 0);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-            if (alarmManager != null)
-            {
-                alarmManager.cancel(pendingIntent);
-                Log.i(LogTag, "Alarm deleted");
-            }
-
-            // Create the new one.
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TwoMinutes, TwoMinutes, pendingIntent);
-            Log.i(LogTag, "New Alarm created");
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,6 +141,23 @@ public class ListImages extends ActionBarActivity {
         } else {
             Log.i(LogTag, "Something went wrong or user clicked cancel.");
         }
+    }
+
+    private void setupAlarm()
+    {
+        Intent broadcast = new Intent(getApplicationContext(), AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, broadcast, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        if (alarmManager != null)
+        {
+            alarmManager.cancel(pendingIntent);
+            Log.i(LogTag, "Alarm deleted");
+        }
+
+        // Create the new one.
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TwoMinutes, TwoMinutes, pendingIntent);
+        Log.i(LogTag, "New Alarm created");
     }
 
     private String getFileNameToStore()

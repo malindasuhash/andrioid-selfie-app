@@ -26,7 +26,7 @@ class SelfieAdapter extends ArrayAdapter<Selfie>
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //
+
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View selfieRow = inflater.inflate(R.layout.row_item, parent, false);
