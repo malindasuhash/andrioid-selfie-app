@@ -39,6 +39,7 @@ public class ShowImageActivity extends Activity {
 
                 if (file.exists())
                 {
+                    // Probably better to show an alert.
                     file.delete();
                     Log.i(LogTag, "File removed.");
                     // Looks like calling finish simply close this view.
