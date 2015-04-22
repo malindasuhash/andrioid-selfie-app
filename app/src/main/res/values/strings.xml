@@ -3,7 +3,4 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="camera">Camera</string>
-    <string name="are_you_sure">Are you sure to remove this file?</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
 </resources>

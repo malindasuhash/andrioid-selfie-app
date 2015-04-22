@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -75,7 +76,7 @@ public class ListImages extends ActionBarActivity {
     {
         ArrayList<Selfie> selfies = new ArrayList<Selfie>();
 
-        File files = new File(getExternalFilesDir(null) + SelfieDirectory);
+        File files = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + SelfieDirectory);
 
         FileFilter fileFilter = new FileFilter() {
             @Override
@@ -164,7 +165,7 @@ public class ListImages extends ActionBarActivity {
     {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-        String filePath = getExternalFilesDir(null) + SelfieDirectory + timeStamp + ".jpg";
+        String filePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + SelfieDirectory + timeStamp + ".jpg";
 
         Log.i(LogTag, filePath);
 
@@ -173,14 +174,14 @@ public class ListImages extends ActionBarActivity {
 
     private void createLocalDirectory()
     {
-        String directory = getExternalFilesDir(null) + SelfieDirectory;
+        String directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + SelfieDirectory;
 
         File file = new File(directory, "temp");
 
             if (!file.exists())
             {
-                Log.i(LogTag, "Directory created");
                 file.mkdirs();
+                Log.i(LogTag, "Directory created");
             } else
             {
                 Log.i(LogTag, "Directory already exists");
