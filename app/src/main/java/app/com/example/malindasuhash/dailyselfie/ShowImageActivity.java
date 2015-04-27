@@ -26,7 +26,9 @@ public class ShowImageActivity extends Activity {
 
         ImageView selectedImageInfo = (ImageView) findViewById(R.id.selectedImageView);
 
-        final Uri imagePath = Uri.parse(intent.getStringExtra("ImagePath"));
+        Selfie selfie = (Selfie) intent.getSerializableExtra("data");
+
+        final Uri imagePath = Uri.parse(selfie.FileFullPath);
         selectedImageInfo.setImageURI(imagePath);
 
         ImageButton removeFileButton = (ImageButton) findViewById(R.id.removeImage);

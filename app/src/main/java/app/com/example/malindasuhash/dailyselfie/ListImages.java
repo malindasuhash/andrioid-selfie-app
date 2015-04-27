@@ -55,7 +55,7 @@ public class ListImages extends ActionBarActivity {
                 Intent showImage = new Intent(getApplicationContext(), ShowImageActivity.class);
 
                 Selfie selectedImage = mSelfies.getItem(position);
-                showImage.putExtra("ImagePath", selectedImage.FileFullPath);
+                showImage.putExtra("data", selectedImage); // This class implements Serializable.
 
                 startActivity(showImage);
             }
