@@ -124,7 +124,8 @@ public class ListImages extends ActionBarActivity {
             showCamera.putExtra(MediaStore.EXTRA_OUTPUT, fileLocation);
 
             // In case if there multiple applications installed.
-            startActivityForResult(Intent.createChooser(showCamera, "Choose an application:"), CAMERA);
+            String string = this.getString(R.string.choose_app);
+            startActivityForResult(Intent.createChooser(showCamera, string), CAMERA);
 
             return true;
         }

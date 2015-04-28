@@ -3,4 +3,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="camera">Camera</string>
+    <string name="choose_app">Choose an application:</string>
 </resources>
